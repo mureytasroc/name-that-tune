@@ -1,7 +1,7 @@
 # NameThatTune
 -----
 
-The NameThatTune Repository.   All files related to this project should be stored here.   When you make changes to a file, preview your changes in the Github desktop app and only select the changes that add (do not remove anything) to the file to push to the repository.   The exception is if you are intentionally changing something that already exists in the repository (edit a method for example).
+The NameThatTune Repository.   All files related to this project should be stored here.   When you make changes to a file, preview your changes in the Github desktop app and only select the changes that add (do not remove anything) to the file to push to the repository.   The exception is if you are intentionally changing something that already exists in the repository (editing a method for example).
 
 ----
 
