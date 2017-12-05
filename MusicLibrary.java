@@ -1,5 +1,7 @@
 public class MusicLibrary {
-    public static void main(String args[]) {;} 
+    public static void main(String args[]) {
+        ArrayTools.printArray(majorChord(440,2));
+    } 
    /** public static double[] harmonic(double root, double duration) { 
         int N = duration*StdAudio.SAMPLE_RATE; 
         double[] smaller=new double[N]; 
@@ -13,17 +15,17 @@ public class MusicLibrary {
         
     }
 }
-**/
+
+
     public static double[] trim(){
         
     }
-
+**/
     public static double[] majorChord(double hz, double duration){
         double majorThirdHz = hz * Math.pow(2,4/12);
         double perfectFifthHz =hz * Math.pow(2,7/12);
         double n = (double)StdAudio.SAMPLE_RATE;
         int length =(int)Math.ceil(n*duration);
-        System.out.println(length);
         double[] root= new double[length];
         double[] majorThird = new double[length];
         double[] perfectFifth = new double[length];
@@ -33,6 +35,7 @@ public class MusicLibrary {
         for (int i = 0; i < length; i++) {
                 majorThird[i] = Math.sin(2 * Math.PI * i * majorThirdHz / StdAudio.SAMPLE_RATE);
             }
+
         for (int i = 0; i < length; i++) {
                 perfectFifth[i] = Math.sin(2 * Math.PI * i * perfectFifthHz / StdAudio.SAMPLE_RATE);
             }
