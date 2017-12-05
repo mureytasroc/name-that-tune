@@ -8,10 +8,11 @@ public class MusicLibrary {
         double low = root / 2; 
         for (double i = 0; i < duration; i+=1/StdAudio.SAMPLE_RATE){
             
-            (Math.sin((2*Math.pi/root)*i)+Math.sin((2*Math.pi/root)*i)+Math.sin((2*Math.pi/root)*i))/3 }
+     //       (Math.sin((2*Math.pi/root)*i)+Math.sin((2*Math.pi/root)*i)+Math.sin((2*Math.pi/root)*i))/3 }
         
         
     }
+}
     public static double[] trim(){
         
     }
@@ -36,5 +37,4 @@ public class MusicLibrary {
             }
         return ArrayTools.weightedAdd(ArrayTools.weightedAdd(root, majorThird,.5,.5),perfectFifth,2/3,1/3);
     }
-}
 }
