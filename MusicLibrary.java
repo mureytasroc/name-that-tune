@@ -2,25 +2,17 @@ public class MusicLibrary {
     public static void main(String args[]) {
         ArrayTools.printArray(majorChord(440,2));
     } 
-   /** public static double[] harmonic(double root, double duration) { 
-        int N = duration*StdAudio.SAMPLE_RATE; 
-        double[] smaller=new double[N]; 
-        double[] bigger=new double[N]; 
-        double[] norm=new double[N]; 
-        double low = root / 2; 
-        for (double i = 0; i < duration; i+=1/StdAudio.SAMPLE_RATE){
-            
-     //       (Math.sin((2*Math.pi/root)*i)+Math.sin((2*Math.pi/root)*i)+Math.sin((2*Math.pi/root)*i))/3 }
-        
-        
-    }
-}
 
+    //Ethan's methods vv
 
-    public static double[] trim(){
-        
+    public static double[] harmonic(int pitch, double duration) {
+        double hz = 440.0 * Math.pow(2, pitch / 12.0);
+        double[] a  = tone(hz, duration);
+        double[] hi = tone(2*hz, duration);
+        double[] lo = tone(hz/2, duration);
+        double[] h  = sum(hi, lo, 0.5, 0.5);
+        return ArrayTools.addArrays(a, h, 0.5, 0.5);
     }
-**/
     public static double[] majorChord(double hz, double duration){
         double majorThirdHz = hz * Math.pow(2,4/12);
         double perfectFifthHz =hz * Math.pow(2,7/12);
@@ -41,4 +33,13 @@ public class MusicLibrary {
             }
         return ArrayTools.addArrays(ArrayTools.addArrays(root, majorThird,.5,.5),perfectFifth,2/3,1/3);
     }
+    
+    
+    
+    //Charley's methods vv
+    
+    /**public static double[] trim(){
+        
+    }**/
+    
 }
