@@ -42,4 +42,9 @@ public class MusicLibrary {
         
     }**/
     
+    public static double[] add3Arrays(double[] a,double[] b,double[] c){
+        double[] h  = sum(a, b, 0.5, 0.5);
+        return ArrayTools.addArrays(c, h, 0.5, 0.5);
+    }
+    
 }
