@@ -127,6 +127,8 @@ public static double[] harmonic(double hz, double duration){
     //Charley's methods vv
     
     
+    
+    
     public static double[] add3Arrays(double[] a,double[] b,double[] c){
         double[] h  = ArrayTools.addArrays(a, b, 0.5, 0.5);
         return ArrayTools.addArrays(c, h, .334, .666);
@@ -137,7 +139,7 @@ public static double[] harmonic(double hz, double duration){
         int endI=0;
         boolean lead=true;
         for(int i=0;i<a.length;i++){
-            if((a[i]==0)&&(lead==true)){
+            if((a[i]==0.0)&&(lead==true)){
                 lead=false;
                 startI=i+1;
             }
@@ -153,6 +155,5 @@ public static double[] harmonic(double hz, double duration){
         return b;
     }
 
-    
     
 }
