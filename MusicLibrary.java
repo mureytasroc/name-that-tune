@@ -1,6 +1,6 @@
 public class MusicLibrary {
     public static void main(String args[]) {
-        StdAudio.play(pitch(440,2));
+        StdAudio.play(fadeIn(majorChord(440,2),2));
     } 
 
     //Ethan's methods 
@@ -123,6 +123,23 @@ public static double[] harmonic(double hz, double duration){
     }
 
     
+    /*
+
+    Function: fadeIn
+    Finished?: No
+    
+    */
+
+
+    public static double[] fadeIn(double[] note, double secondsToFade){
+        double n = (double)StdAudio.SAMPLE_RATE;
+        int length =(int)Math.ceil(n*secondsToFade);
+        double[] root= new double[length];
+        for(int i=0;i<length;i+=1){
+            root[i]=note[i]*(i/length);
+        }
+        return root;
+    }
 
     //Charley's methods vv
     
