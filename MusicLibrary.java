@@ -1,25 +1,48 @@
 public class MusicLibrary {
     public static void main(String args[]) {
-        StdAudio.play(minorChord(440,2));
+        StdAudio.play(pitch(440,2));
     } 
 
-    //Ethan's methods vv
-/*
-    public static double[] harmonic(int pitch, double duration) {
-        double hz = 440.0 * Math.pow(2, pitch / 12.0);
-        double[] a  = tone(hz, duration);
-        double[] hi = tone(2*hz, duration);
-        double[] lo = tone(hz/2, duration);
-        double[] h  = sum(hi, lo, 0.5, 0.5);
-        return ArrayTools.addArrays(a, h, 0.5, 0.5);
-    }
+    //Ethan's methods 
+
+
+      /*
+
+    Function: harmonic
+    Finished?: Yes
+
     */
+
+
+public static double[] harmonic(double hz, double duration){
+        double highOctavehz = hz * 2.0;
+        double lowOctavehz = hz/2.0;
+        double n = (double)StdAudio.SAMPLE_RATE;
+        int length =(int)Math.ceil(n*duration);
+        double[] root= new double[length];
+        double[] highOctave = new double[length];
+        double[] lowOctave = new double[length];
+        for (int i = 0; i < length; i++) {
+                root[i] = Math.sin(2 * Math.PI * i * hz / StdAudio.SAMPLE_RATE);
+            }
+        for (int i = 0; i < length; i++) {
+                highOctave[i] = Math.sin(2 * Math.PI * i * highOctavehz / StdAudio.SAMPLE_RATE);
+            }
+        for (int i = 0; i < length; i++) {
+                lowOctave[i] = Math.sin(2 * Math.PI * i * lowOctavehz / StdAudio.SAMPLE_RATE);
+            }
+        return add3Arrays(root, highOctave, lowOctave);
+    }
+
 
     /*
 
     Function: Major Chord
+    Finished?: Yes
 
     */
+
+
     public static double[] majorChord(double hz, double duration){
         double majorThirdHz = hz * Math.pow(2,4.0/12);
         double perfectFifthHz =hz * Math.pow(2,7.0/12);
@@ -39,10 +62,12 @@ public class MusicLibrary {
             }
         return add3Arrays(root, majorThird, perfectFifth);
     }
+
     /*
 
     Function: Minor Chord
-    
+    Finished?: Yes
+
     */
     
     public static double[] minorChord(double hz, double duration){
@@ -65,7 +90,40 @@ public class MusicLibrary {
         return add3Arrays(root, minorThird, perfectFifth);
     }
     
+
+    /*
+
+    Function: pitch
+    Finished?: Yes
     
+    */
+
+
+    public static double[] pitch(double hz, double duration){
+        double n = (double)StdAudio.SAMPLE_RATE;
+        int length =(int)Math.ceil(n*duration);
+        double[] root= new double[length];
+        for (int i = 0; i < length; i++) {
+                root[i] = Math.sin(2 * Math.PI * i * hz / StdAudio.SAMPLE_RATE);
+            }
+            return root;
+    }
+    
+
+    /*
+
+    Function: sum
+    Finished?: Yes
+    
+    */
+
+    
+    public static double[] sum(double[] a, double[] b, double wA, double wB){
+        return ArrayTools.addArrays(a, b, wA, wB);
+    }
+
+    
+
     //Charley's methods vv
     
     
