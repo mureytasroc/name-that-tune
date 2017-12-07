@@ -1,6 +1,6 @@
 public class MusicLibrary {
     public static void main(String args[]) {
-        StdAudio.play(fadeIn(majorChord(440,2),2));
+        StdAudio.play(fadeOut(pitch(440,7),7));
     } 
 
     //Ethan's methods 
@@ -126,7 +126,8 @@ public static double[] harmonic(double hz, double duration){
     /*
 
     Function: fadeIn
-    Finished?: No
+    Finished?: Yes
+    ISSUE: IF THE LENGTH OF THE INPUTED FUNCTION IS DIFFERENT THAN THE SECONDS TO FADE, IT WILL CUT OFF PART OF THE INITIAL ARRAY
     
     */
 
@@ -134,11 +135,31 @@ public static double[] harmonic(double hz, double duration){
     public static double[] fadeIn(double[] note, double secondsToFade){
         double n = (double)StdAudio.SAMPLE_RATE;
         int length =(int)Math.ceil(n*secondsToFade);
-        double[] root= new double[length];
+        double[] finalA= new double[length];
         for(int i=0;i<length;i+=1){
-            root[i]=note[i]*(i/length);
+            finalA[i]=note[i]*((double)i/(n*secondsToFade));
         }
-        return root;
+        return finalA;
+    }
+
+
+       /*
+
+    Function: fadeOut
+    Finished?: No
+    ISSUE:
+    
+    */
+
+
+    public static double[] fadeout(double[] note, double secondsToFade){
+        double n = (double)StdAudio.SAMPLE_RATE;
+        int length =(int)Math.ceil(n*secondsToFade);
+        double[] finalA= new double[length];
+        for(int i=length;i>0;i-=1){
+            
+        }
+        return finalA;
     }
 
     //Charley's methods vv
