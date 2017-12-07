@@ -1,6 +1,6 @@
 public class MusicLibrary {
     public static void main(String args[]) {
-        StdAudio.play(fadeOut(pitch(440,7),7));
+        StdAudio.play(repeatNote(harmonic(440,1),5,2));
     } 
 
     //Ethan's methods 
@@ -161,6 +161,37 @@ public static double[] harmonic(double hz, double duration){
         }
         return finalA;
     }
+
+
+ /*
+ 
+ ADDED FUNCTION
+    Function: repeatNote
+    Finished?: No
+    Purpose: Repeats a note over and over again; (Basically sets a beat)
+    Params:
+        Note: the note to be repeated
+        numRepeated: the number of times to repeat the note
+        breakSeconds: the amound of times in between each note
+    */
+
+
+    public static double[] repeatNote(double[] note, double numRepeated, double breakSeconds){
+        double n = (double)StdAudio.SAMPLE_RATE;
+        int length = (note.length*(int)numRepeated)+(((int)numRepeated-1)*(int)breakSeconds);
+        double[] finalA= new double[length];
+        for(int k=0; k<(int)numRepeated;k+=1){
+        for(int i=0; i<note.length; i+=1){
+            finalA[i]=note[i+(k*(note.length+(int)(breakSeconds*n)))];
+        }
+        for(int j=0; j<breakSeconds*n; j+=1){
+            finalA[j]=note[j+note.length+(k*(int)(note.length+(breakSeconds*n)))];
+
+        }
+    }
+    return finalA;
+    }
+
 
     //Charley's methods vv
     
