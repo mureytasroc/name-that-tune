@@ -1,6 +1,6 @@
 public class MusicLibrary {
     public static void main(String args[]) {
-    //    StdAudio.play(repeatNote(harmonic(440,1),5,2));
+        StdAudio.play(repeatNote(harmonic(440,1),5,2.0));
     } 
 
     //Ethan's methods 
@@ -167,7 +167,7 @@ public static double[] harmonic(double hz, double duration){
  
  ADDED FUNCTION
     Function: repeatNote
-    Finished?: No
+    Finished?: Yes
     Purpose: Repeats a note over and over again; (Basically sets a beat)
     Params:
         Note: the note to be repeated
@@ -176,20 +176,17 @@ public static double[] harmonic(double hz, double duration){
     
 */
 
-    public static double[] repeatNote(double[] note, double numRepeated, double breakSeconds){
-        double n = (double)StdAudio.SAMPLE_RATE;
-        int length = (note.length*(int)numRepeated)+(((int)numRepeated-1)*(int)breakSeconds);
-        double[] finalA= new double[length];
-        for(int k=0; k<(int)numRepeated;k+=1){
-        for(int i=0; i<note.length; i+=1){
-            finalA[i]=note[i+(k*(note.length+(int)(breakSeconds*n)))];
+    public static double[] repeatNote(double[] note, int numRepeated, double breakSeconds){
+        int n = (int)StdAudio.SAMPLE_RATE;
+        int bS =(int)Math.ceil(breakSeconds);
+        double[] breakArray= new double[bS*n];
+        double[] repeatArray = concatArray(note,breakArray);
+        double[] finalA = new double[1];
+        for(int i=0; i<numRepeated; i+=1){
+            finalA=concatArray(finalA,repeatArray);
         }
-        for(int j=0; j<breakSeconds*n; j+=1){
-            finalA[j]=note[i+note.length+(k*(int)(note.length+(breakSeconds*n)))];
 
-        }
-    }
-    return finalA;
+        return finalA;
     }
 
 
