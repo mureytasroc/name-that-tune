@@ -1,6 +1,6 @@
 public class MusicLibrary {
     public static void main(String args[]) {
-        StdAudio.play(repeatNote(harmonic(440,1),5,2));
+    //    StdAudio.play(repeatNote(harmonic(440,1),5,2));
     } 
 
     //Ethan's methods 
@@ -173,8 +173,8 @@ public static double[] harmonic(double hz, double duration){
         Note: the note to be repeated
         numRepeated: the number of times to repeat the note
         breakSeconds: the amound of times in between each note
-    */
-
+    
+*/
 
     public static double[] repeatNote(double[] note, double numRepeated, double breakSeconds){
         double n = (double)StdAudio.SAMPLE_RATE;
@@ -185,13 +185,27 @@ public static double[] harmonic(double hz, double duration){
             finalA[i]=note[i+(k*(note.length+(int)(breakSeconds*n)))];
         }
         for(int j=0; j<breakSeconds*n; j+=1){
-            finalA[j]=note[j+note.length+(k*(int)(note.length+(breakSeconds*n)))];
+            finalA[j]=note[i+note.length+(k*(int)(note.length+(breakSeconds*n)))];
 
         }
     }
     return finalA;
     }
 
+
+
+
+public static double[] concatArray(double[] arrayA, double[] arrayB){
+        int length = arrayA.length + arrayB.length;
+        double[] finalA= new double[length];
+         for(int i=0; i<arrayA.length; i+=1){
+            finalA[i]=arrayA[i];
+        }
+        for(int j=0; j<arrayB.length; j+=1){
+            finalA[j+arrayA.length]=arrayB[j];
+        }
+        return finalA;
+    }
 
     //Charley's methods vv
     
