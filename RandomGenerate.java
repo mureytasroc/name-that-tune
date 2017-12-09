@@ -1,16 +1,20 @@
+import java.util.Random;
 public class RandomGenerate {
     public static void main(String args[]) {
-        StdAudio.play(majorMinor(440));
-    } 
+        GenerateImage.generate(majorMinor(440));
+
+    }
 
    public static double[] majorMinor(double hz){
-    double[] reg = MusicLibrary.harmonic(hz,.5);
-    double[] major = MusicLibrary.majorChord(hz,1);
-    double[] minor = MusicLibrary.minorChord(hz,1);
-    double[] regRepeat = MusicLibrary.repeatNote(reg,3,.2);
-    double[] final1 = MusicLibrary.concatArray(regRepeat,major);
-    double[] final2 = MusicLibrary.concatArray(final1,minor);
-return final2;
+    double[] root1 = MusicLibrary.harmonic(300.25,3);
+    double[] root2 = MusicLibrary.harmonic(500.99,3);
+    double[] root3 = MusicLibrary.minorChord(200,3);
+    double[] final1 = MusicLibrary.concatArray(root1,root2);
+    double[] final2 = MusicLibrary.concatArray(final1,root3);
+    double[] final3 = MusicLibrary.repeatNote(final2,5,0);
+
+return final3;
 }
+
 
 }

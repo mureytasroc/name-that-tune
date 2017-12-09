@@ -1,6 +1,6 @@
 public class MusicLibrary {
     public static void main(String args[]) {
-        StdAudio.play(repeatNote(harmonic(440,1),5,2.0));
+        repeatNote(harmonic(440,1),5,2.0);
     } 
 
     //Ethan's methods 
