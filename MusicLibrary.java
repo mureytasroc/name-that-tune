@@ -167,7 +167,7 @@ public static double[] harmonic(double hz, double duration){
  
  ADDED FUNCTION
     Function: repeatNote
-    Finished?: Yes
+    Finished?:YES
     Purpose: Repeats a note over and over again; (Basically sets a beat)
     Params:
         Note: the note to be repeated
