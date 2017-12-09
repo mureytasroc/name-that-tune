@@ -1,8 +1,8 @@
 import java.util.Random;
 public class RandomGenerate {
     public static void main(String args[]) {
-        GenerateImage.generate(majorMinor(440));
-        StdAudio.play(majorMinor(320));
+        GenerateImage.generate(majorMinor(320));
+        //StdAudio.play(majorMinor(320));
 
     }
 
