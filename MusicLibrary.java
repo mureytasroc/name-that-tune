@@ -237,7 +237,22 @@ public static double[] concatArray(double[] arrayA, double[] arrayB){
         return b;
     }
 
-    
+    public static double[] echo(double[] a,double offset){
+        int numOff=(int)Math.round(offset*(double)StdAudio.SAMPLE_RATE);
+        double[] b = new double[a.length];
+        for(int i=0;i<a.length;i++){
+            if(i<a.length-numOff){
+            b[i]=a[i+numOff];}
+            else{
+                b[i]=a[i-a.length+numOff];
+            }
+            
+        }
+        for(int i=0;i<a.length;i++){
+            b[i]=((a[i]+b[i])/2);
+        }
+        return b;
+    }
 
     
 }
