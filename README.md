@@ -9,7 +9,6 @@ The NameThatTune Repository.   All files related to this project should be store
 
 #### Charley: 
 * MusicLibrary trim
-* MusicLibrary clip
 * MusicLibrary echo
 * MusicLibrary changeVolume
 * MusicLibrary fadeIn
