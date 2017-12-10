@@ -19,7 +19,7 @@ return final2;
 }
 
  public static double[] randomG(double hz){
-    int numNotes =(int)(10*Math.random());
+    int numNotes =(int)((10*Math.random()));
     System.out.println(numNotes);
     double[][] notes = new double[numNotes][];
     for(int j=0; j<numNotes; j++){
@@ -34,6 +34,7 @@ return final2;
      final1 = MusicLibrary.concatArray(final1, notes[s]);
     }
     final1 = MusicLibrary.repeatNote(final1,3,0);
+    final1 = ArrayTools.addArrays(final1,MusicLibrary.harmonic(hz,3),.3,.3);
     return final1;
 }
 
