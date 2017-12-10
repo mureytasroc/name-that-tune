@@ -1,6 +1,6 @@
 public class MusicLibrary {
     public static void main(String args[]) {
-        repeatNote(harmonic(440,1),5,2.0);
+        StdAudio.play(echo(majorChord(440,1),0.3,0.5,0.05,0.5));
     } 
 
     //Ethan's methods 
@@ -237,19 +237,38 @@ public static double[] concatArray(double[] arrayA, double[] arrayB){
         return b;
     }
 
-    public static double[] echo(double[] a,double offset){
+    public static double[] echo(double[] a, double offset, double reductionVal, double endThreshold, double glideTime){
+
         int numOff=(int)Math.round(offset*(double)StdAudio.SAMPLE_RATE);
-        double[] b = new double[a.length];
-        for(int i=0;i<a.length;i++){
-            if(i<a.length-numOff){
-            b[i]=a[i+numOff];}
-            else{
-                b[i]=a[i-a.length+numOff];
-            }
-            
+        int extra=(int)Math.round(glideTime*(double)StdAudio.SAMPLE_RATE);
+        System.out.print(numOff);
+        double[] b = new double[a.length+numOff+extra];
+        for(int i=0;i<b.length;i++){
+            b[i]=0;
         }
+        System.out.println(a.length+"    "+b.length+"\n\n\n");
+        /*for(int i=numOff;i<a.length;i++){
+            //if(i<a.length-numOff){
+            b[i]=a[i-numOff]*reductionVal;}*/
+        int e=1;
+        while(Math.pow(reductionVal,e)>endThreshold){
+            if(numOff*(e+1)>b.length){
+                break;
+            }
+            else{
+                System.out.println(e*numOff);
+                for(int i=e*numOff;i<b.length;i++){
+                b[i]+=a[i-e*numOff]*Math.pow(reductionVal,e);
+                }
+            }
+               e++;
+        }
+            /*else{
+                b[i]=a[i-a.length+numOff]*reductionVal;
+            }*/
+
         for(int i=0;i<a.length;i++){
-            b[i]=((a[i]+b[i])/2);
+            b[i]=((a[i]+b[i]));
         }
         return b;
     }
