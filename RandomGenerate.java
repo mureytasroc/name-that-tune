@@ -2,7 +2,7 @@ import java.util.Random;
 public class RandomGenerate {
     public static void main(String args[]) {
       //  GenerateImage.generate(majorMinor(320));
-        StdAudio.play(progression1(440));
+        StdAudio.play(progression2(440));
 
     }
 
@@ -34,7 +34,7 @@ return final2;
      final1 = MusicLibrary.concatArray(final1, notes[s]);
     }
     final1 = MusicLibrary.repeatNote(final1,3,0);
-    final1 = ArrayTools.addArrays(final1,MusicLibrary.harmonic(hz,3),.3,.3);
+ 
     return final1;
 }
 
@@ -47,4 +47,11 @@ public static double[] progression1(double hz){
 return final1;
 }
 
+
+public static double[] progression2(double hz){
+    double[] top = randomG(440);
+    double[] base = MusicLibrary.majorChord(hz,top.length/StdAudio.SAMPLE_RATE);
+    double[] final1 = ArrayTools.addArrays(top,base,.7,.3);
+return final1;
+}
 }
