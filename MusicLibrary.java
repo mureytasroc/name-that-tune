@@ -1,6 +1,8 @@
 public class MusicLibrary {
     public static void main(String args[]) {
-        StdAudio.play(echo(majorChord(440,1),0.3,0.5,0.05,0.5));
+        //StdAudio.play(echo(concatArray(concatArray(majorChord(410,1),pitch(0,1)),minorChord(400,1)),10000,0.3,0.05,0.5));//echo
+        //StdAudio.play(changeVol(pitch(440,1),0.01));//changeVol
+        //StdAudio.play(fadeOut(pitch(440,2),1));//fadeOut
     } 
 
     //Ethan's methods 
@@ -143,26 +145,6 @@ public static double[] harmonic(double hz, double duration){
     }
 
 
-       /*
-
-    Function: fadeOut
-    Finished?: No
-    ISSUE:
-    
-    */
-
-
-    public static double[] fadeout(double[] note, double secondsToFade){
-        double n = (double)StdAudio.SAMPLE_RATE;
-        int length =(int)Math.ceil(n*secondsToFade);
-        double[] finalA= new double[length];
-        for(int i=length;i>0;i-=1){
-            
-        }
-        return finalA;
-    }
-
-
  /*
  
  ADDED FUNCTION
@@ -237,35 +219,29 @@ public static double[] concatArray(double[] arrayA, double[] arrayB){
         return b;
     }
 
-    public static double[] echo(double[] a, double offset, double reductionVal, double endThreshold, double glideTime){
-
-        int numOff=(int)Math.round(offset*(double)StdAudio.SAMPLE_RATE);
-        int extra=(int)Math.round(glideTime*(double)StdAudio.SAMPLE_RATE);
-        System.out.print(numOff);
-        double[] b = new double[a.length+numOff+extra];
+    
+    //StdAudio.play(echo(concatArray(concatArray(majorChord(441,1),pitch(0,1)),minorChord(400,1)),10000,0.3,0.05,0.5));
+    public static double[] echo(double[] a, int offset, double decay, double endThreshold, double glideTime){
+        int extra=(int)Math.ceil(glideTime*(double)StdAudio.SAMPLE_RATE);
+        double[] b = new double[a.length+offset+extra];
         for(int i=0;i<b.length;i++){
             b[i]=0;
         }
         System.out.println(a.length+"    "+b.length+"\n\n\n");
-        /*for(int i=numOff;i<a.length;i++){
-            //if(i<a.length-numOff){
-            b[i]=a[i-numOff]*reductionVal;}*/
         int e=1;
-        while(Math.pow(reductionVal,e)>endThreshold){
-            if(numOff*(e+1)>b.length){
+        while(Math.pow(decay,e)>endThreshold){
+            if(a.length+offset*(e)>b.length){
                 break;
             }
             else{
-                System.out.println(e*numOff);
-                for(int i=e*numOff;i<b.length;i++){
-                b[i]+=a[i-e*numOff]*Math.pow(reductionVal,e);
+                System.out.println(e*offset);
+                for(int i=e*offset;i<(a.length+e*offset);i++){
+                b[i]+=a[i-e*offset]*Math.pow(decay,e);
                 }
             }
                e++;
         }
-            /*else{
-                b[i]=a[i-a.length+numOff]*reductionVal;
-            }*/
+
 
         for(int i=0;i<a.length;i++){
             b[i]=((a[i]+b[i]));
@@ -273,5 +249,36 @@ public static double[] concatArray(double[] arrayA, double[] arrayB){
         return b;
     }
 
+           /*
+
+    Function: fadeOut
+    Finished?: No
+    ISSUE:
     
+    */
+
+
+    public static double[] fadeOut(double[] a, double secondsToFade){
+        int extra=(int)Math.ceil(secondsToFade*(double)StdAudio.SAMPLE_RATE);
+        double[] b= new double[a.length];
+        for(int i=0;i<a.length;i++){
+            if(i<a.length-extra){
+                b[i]=a[i];
+            }
+            else{
+                b[i]=a[i]*(1-(((double)(i-(a.length-extra)))/((double)extra)));
+            }
+        }
+        return b;
+    }
+    
+    
+    public static double[] changeVol(double[] a, double volMod){
+        double[] b=new double[a.length];
+        for(int i=0;i<a.length;i++){
+            b[i]=a[i]*volMod;
+        }
+        return b;
+    }
+
 }
