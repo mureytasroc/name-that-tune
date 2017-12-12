@@ -1,8 +1,9 @@
 public class MusicLibrary {
     public static void main(String args[]) {
-        StdAudio.play(echo(concatArray(concatArray(majorChord(410,1),pitch(0,1)),minorChord(400,1)),10000,0.3,0.05,0.5));//echo
+        //StdAudio.play(echo(concatArray(concatArray(majorChord(410,1),pitch(0,1)),minorChord(400,1)),10000,0.3,0.05,0.5));//echo
         //StdAudio.play(changeVol(pitch(440,1),0.01));//changeVol
         //StdAudio.play(fadeOut(pitch(440,2),1));//fadeOut
+        StdAudio.play(beatGen(440, 4, 4, 60, 0.5));
     } 
 
     //Ethan's methods 
@@ -281,4 +282,23 @@ public static double[] concatArray(double[] arrayA, double[] arrayB){
         return b;
     }
 
+public static double[] beatGen(double hz, double ts1, double ts2, double bpm, double noteTypeMod){
+    double barLen=(240/ts2/bpm)*ts1;
+    int arrayLen=(int)Math.ceil(barLen*(double)StdAudio.SAMPLE_RATE);
+    double noteLen=(240/ts2/bpm/noteTypeMod)/2;
+    int aNoteLen=(int)Math.ceil(noteLen*(double)StdAudio.SAMPLE_RATE);
+    double[] b=new double[arrayLen];
+    for(int noteNum=0;noteNum<ts2;noteNum++){
+        for(int i=aNoteLen*noteNum;i<aNoteLen*(noteNum+1);i++){
+            if(i<aNoteLen*(noteNum)+(int)Math.ceil(aNoteLen/2)){//beat part
+                b[i]=hz;
+            }
+            else{//rest part
+                b[i]=0;
+            }
+        }
+    }
+    return b;
+}
+    
 }
