@@ -1,6 +1,6 @@
 public class MusicLibrary {
     public static void main(String args[]) {
-        //StdAudio.play(echo(concatArray(concatArray(majorChord(410,1),pitch(0,1)),minorChord(400,1)),10000,0.3,0.05,0.5));//echo
+        StdAudio.play(echo(concatArray(concatArray(majorChord(410,1),pitch(0,1)),minorChord(400,1)),10000,0.3,0.05,0.5));//echo
         //StdAudio.play(changeVol(pitch(440,1),0.01));//changeVol
         //StdAudio.play(fadeOut(pitch(440,2),1));//fadeOut
     } 
