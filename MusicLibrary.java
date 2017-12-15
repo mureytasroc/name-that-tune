@@ -317,18 +317,18 @@ public static double[] beatGen(double hz, double ts1, double ts2, double bpm, do
     public static double[] changeSpeedSamePitch(double[] a,double speedMod){
         return speedMod;
     }*/
-    public static double[] HbeatGen(double hz, double ts1, double ts2, double bpm, double beatLenMod){
-    return add3Arrays(beatGen(hz, ts1, ts2, bpm, beatLenMod),beatGen(hz, ts1, ts2, bpm, beatLenMod),beatGen(hz, ts1, ts2, bpm, beatLenMod));
+    public static double[] HbeatGen(double hz, double ts1, double ts2, double bpm, double beatLenMod,double fadeRatio){
+    return add3Arrays(beatGen(hz, ts1, ts2, bpm, beatLenMod,fadeRatio),beatGen(hz, ts1, ts2, bpm, beatLenMod,fadeRatio),beatGen(hz, ts1, ts2, bpm, beatLenMod,fadeRatio));
                }
     
     
-    public static double[] randBeatFollow(double hz, double noteNum, double bpm, double beatLenMod){//beatLenMod is length of 
+    public static double[] randBeatFollow(double hz, double noteNum, double bpm, double beatLenMod,double fadeRatio){//beatLenMod is length of 
         //double[] notes={440,493.883,277.183,329.628,369.994};//penta
         double[] notes={392,440,493.883,261.63,329.3,369.99};
         int aNoteLen=(int)Math.floor(240/noteNum/bpm*(double)StdAudio.SAMPLE_RATE);
         double[] a=new double[(int)noteNum*aNoteLen];
         for(int i=0;i<noteNum;i++){
-            double[] thisNote = HbeatGen(notes[(int) Math.floor(Math.random() * notes.length)], 1, 1, bpm*noteNum, (((double)2)/((double)3)));
+            double[] thisNote = HbeatGen(notes[(int) Math.floor(Math.random() * notes.length)], 1, 1, bpm*noteNum, (((double)2)/((double)3)),fadeRatio);
             for(int e=aNoteLen*i;e<aNoteLen*(i+1);e++){
                 a[e]=thisNote[e-aNoteLen*i];
             }
@@ -364,10 +364,10 @@ public static double[] beatGen(double hz, double ts1, double ts2, double bpm, do
     }
 
     public static void alien(){
-        StdAudio.play(simpleAdd(echo(HbeatGen(110, 8, 8, 60, 1.5),10000,0.3,0.05,0.5),HbeatGen(300, 8, 8, 50, (((double)1)/((double)4)))));
+        StdAudio.play(simpleAdd(echo(HbeatGen(110, 8, 8, 60, (((double)2)/((double)3)),0.1),10000,0.3,0.05,0.5),HbeatGen(300, 8, 8, 50, (((double)1)/((double)4)),0.1)));
     }
     public static void electro(){
-         StdAudio.play(simpleAdd(echo(HbeatGen(110, 8, 8, 60, 1.5),10000,0.3,0.05,0.5),randBeatFollow(0, 8, 120, (((double)2)/((double)3)))));//beatGen
+         StdAudio.play(simpleAdd(echo(HbeatGen(110, 8, 8, 60, (((double)2)/((double)3)),0.1),10000,0.3,0.05,0.5),randBeatFollow(0, 8, 120, (((double)2)/((double)3)),0.1)));//beatGen
     }
   
     
