@@ -3,7 +3,10 @@ public class MusicLibrary {
         //StdAudio.play(echo(concatArray(concatArray(majorChord(410,1),pitch(0,1)),minorChord(400,1)),10000,0.3,0.05,0.5));//echo
         //StdAudio.play(changeVol(pitch(440,1),0.01));//changeVol
         //StdAudio.play(fadeOut(pitch(440,2),1));//fadeOut
-        //StdAudio.play(beatGen(110, 8, 8, 60, 0.5,10));//beatGen
+        //alien();
+        //StdAudio.play(HbeatGen(110, 8, 8, 60, 1.5));
+        double[] a =randBeatFollow(0, 4, 120, 1.5,0.5);
+        StdAudio.play(simpleAdd(concatArray(a,a),concatArray(HbeatGen(100, 4, 4, 120, 20),HbeatGen(100, 4, 4, 120, 20))));//beatGen
     } 
 
     //Ethan's methods 
@@ -282,18 +285,23 @@ public static double[] concatArray(double[] arrayA, double[] arrayB){
         return b;
     }
 
-public static double[] beatGen(double hz, double ts1, double ts2, double bpm, double noteTypeMod, double beatLenMod){//beatLenMod is length of actual sound in that beat (1 is lowest value for this)
+public static double[] beatGen(double hz, double ts1, double ts2, double bpm, double beatLenMod,double fadeRatio){//beatLenMod is length of actual sound in that beat (1 is lowest value for this)
     double barLen=(240/ts2/bpm)*ts1;
     int arrayLen=(int)Math.ceil(barLen*(double)StdAudio.SAMPLE_RATE);
     double noteLen=(240/ts2/bpm);
-    int aNoteLen=(int)Math.floor(noteLen*(double)StdAudio.SAMPLE_RATE);
+    int aNoteLen=(int)Math.floor(240/ts2/bpm*(double)StdAudio.SAMPLE_RATE);
     double[] b=new double[arrayLen];
-    System.out.println(aNoteLen);
-    System.out.println(arrayLen);
+    int posToFade=Math.floor((double)240/ts2/bpm*beatLenMod*fadeRatio*(double)StdAudio.SAMPLE_RATE);
+    
     for(int noteNum=0;noteNum<ts1;noteNum++){
         for(int i=aNoteLen*noteNum;i<aNoteLen*(noteNum+1);i++){
-            if(i<aNoteLen*(noteNum)+(int)Math.ceil((double)aNoteLen/beatLenMod)){//beat part
+            if(i<aNoteLen*(noteNum)+(int)Math.ceil((double)aNoteLen*beatLenMod)){//beat part
+                if(i<aNoteLen*(noteNum)+(int)Math.ceil((double)aNoteLen*beatLenMod)-posToFade){
                 b[i]=Math.sin(2 * Math.PI * (i-aNoteLen*noteNum) * hz / StdAudio.SAMPLE_RATE);
+            }
+            else{
+                b[i]=Math.sin(2 * Math.PI * (i-aNoteLen*noteNum) * hz / StdAudio.SAMPLE_RATE)*(1-(((double)(i-(a.length-posToFade)))/((double)extra)));
+            }
             }
             else{//rest part
                 b[i]=0;
@@ -302,5 +310,65 @@ public static double[] beatGen(double hz, double ts1, double ts2, double bpm, do
     }
     return b;
 }
+   
+    /*public static double[] changeSpeed(double[] a,double speedMod){
+        return speedMod;
+    }
+    public static double[] changeSpeedSamePitch(double[] a,double speedMod){
+        return speedMod;
+    }*/
+    public static double[] HbeatGen(double hz, double ts1, double ts2, double bpm, double beatLenMod){
+    return add3Arrays(beatGen(hz, ts1, ts2, bpm, beatLenMod),beatGen(hz, ts1, ts2, bpm, beatLenMod),beatGen(hz, ts1, ts2, bpm, beatLenMod));
+               }
+    
+    
+    public static double[] randBeatFollow(double hz, double noteNum, double bpm, double beatLenMod){//beatLenMod is length of 
+        //double[] notes={440,493.883,277.183,329.628,369.994};//penta
+        double[] notes={392,440,493.883,261.63,329.3,369.99};
+        int aNoteLen=(int)Math.floor(240/noteNum/bpm*(double)StdAudio.SAMPLE_RATE);
+        double[] a=new double[(int)noteNum*aNoteLen];
+        for(int i=0;i<noteNum;i++){
+            double[] thisNote = HbeatGen(notes[(int) Math.floor(Math.random() * notes.length)], 1, 1, bpm*noteNum, (((double)2)/((double)3)));
+            for(int e=aNoteLen*i;e<aNoteLen*(i+1);e++){
+                a[e]=thisNote[e-aNoteLen*i];
+            }
+
+        }
+        return a;
+    }
+
+    public static double[] simpleAdd(double[] a,double[] b){
+        double[] c = new double[Math.max(a.length,b.length)];
+        if(a.length>b.length){
+            for(int i=0;i<c.length;i++){
+                if(i<b.length)
+                c[i]=a[i]+b[i];
+                else
+                c[i]=a[i];
+            }
+        }
+        if(a.length<b.length){
+            for(int i=0;i<c.length;i++){
+                if(i<a.length)
+                c[i]=a[i]+b[i];
+                else
+                c[i]=b[i];
+            }
+        }
+        if(a.length==b.length){
+            for(int i=0;i<c.length;i++){
+                c[i]=a[i]+b[i];
+            }
+        }
+        return c;
+    }
+
+    public static void alien(){
+        StdAudio.play(simpleAdd(echo(HbeatGen(110, 8, 8, 60, 1.5),10000,0.3,0.05,0.5),HbeatGen(300, 8, 8, 50, (((double)1)/((double)4)))));
+    }
+    public static void electro(){
+         StdAudio.play(simpleAdd(echo(HbeatGen(110, 8, 8, 60, 1.5),10000,0.3,0.05,0.5),randBeatFollow(0, 8, 120, (((double)2)/((double)3)))));//beatGen
+    }
+  
     
 }
