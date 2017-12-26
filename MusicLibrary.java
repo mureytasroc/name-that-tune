@@ -1,13 +1,17 @@
+
 public class MusicLibrary {
     public static void main(String args[]) {
         //StdAudio.play(echo(concatArray(concatArray(majorChord(410,1),pitch(0,1)),minorChord(400,1)),10000,0.3,0.05,0.5));//echo
         //StdAudio.play(changeVol(pitch(440,1),0.01));//changeVol
         //StdAudio.play(fadeOut(pitch(440,2),1));//fadeOut
         //alien();
-        //StdAudio.play(HbeatGen(110, 8, 8, 60, 0.5,0));
-        //double[] a =randBeatFollow(0, 4, 120, 1.5,0.5);//below
-        //StdAudio.play(simpleAdd(concatArray(a,a),concatArray(HbeatGen(100, 4, 4, 120, 20),HbeatGen(100, 4, 4, 120, 20))));//beatGen
-        StdAudio.play(concatArray(shepard(440,3),shepard(440,3)));//shepard risset glissando
+        //StdAudio.play(HbeatGen(110, 8, 8, 60, 0.5,0.1));
+        //double[] a =randBeatFollow(0, 4, 120, 0.5,0.1);//below
+        //StdAudio.play(addArrays(concatArray(a,a),concatArray(HbeatGen(100, 4, 4, 120, 0.5,0.1),HbeatGen(100, 4, 4, 120, 0.5,0.1))));//beatGen
+        StdAudio.play(trim(shepardRisset(100,1000,50)));//shepard risset glissando
+        //StdAudio.play(presets.randomBeatSad());
+        //StdAudio.play(readWav("wavtest.wav"));
+
     } 
 
     //Ethan's methods 
@@ -38,7 +42,7 @@ public static double[] harmonic(double hz, double duration){
         for (int i = 0; i < length; i++) {
                 lowOctave[i] = Math.sin(2 * Math.PI * i * lowOctavehz / StdAudio.SAMPLE_RATE);
             }
-        return add3Arrays(root, highOctave, lowOctave);
+        return addArrays(root, highOctave, lowOctave);
     }
 
 
@@ -67,7 +71,7 @@ public static double[] harmonic(double hz, double duration){
         for (int i = 0; i < length; i++) {
                 perfectFifth[i] = Math.sin(2 * Math.PI * i * perfectFifthHz / StdAudio.SAMPLE_RATE);
             }
-        return add3Arrays(root, majorThird, perfectFifth);
+        return addArrays(root, majorThird, perfectFifth);
     }
 
     /*
@@ -94,7 +98,7 @@ public static double[] harmonic(double hz, double duration){
         for (int i = 0; i < length; i++) {
                 perfectFifth[i] = Math.sin(2 * Math.PI * i * perfectFifthHz / StdAudio.SAMPLE_RATE);
             }
-        return add3Arrays(root, minorThird, perfectFifth);
+        return addArrays(root, minorThird, perfectFifth);
     }
     
 
@@ -178,30 +182,90 @@ public static double[] harmonic(double hz, double duration){
 
 
 
+public static double[] concatArray(double[]... values){
+	int len=0;
+	int[] lens=new int[values.length];
+	for(int i=0;i<values.length;i++){
+		len+=values[i].length;
+		lens[i]=values[i].length;
+	}
+	double[] b=new double[len];
 
-public static double[] concatArray(double[] arrayA, double[] arrayB){
-        int length = arrayA.length + arrayB.length;
-        double[] finalA= new double[length];
-         for(int i=0; i<arrayA.length; i+=1){
-            finalA[i]=arrayA[i];
-        }
-        for(int j=0; j<arrayB.length; j+=1){
-            finalA[j+arrayA.length]=arrayB[j];
-        }
-        return finalA;
-    }
+	for(int i=0;i<values.length;i++){
+		for(int e=0;e<values[i].length;e++){
+			b[i*lens[ensureRange(i-1,0,lens.length-1)]+e]=values[i][e];
+		}
+	}
+	return b;
+}
+
 
     //Charley's methods vv
     
     
-    
-    
-    
-    
-    public static double[] add3Arrays(double[] a,double[] b,double[] c){
-        double[] h  = ArrayTools.addArrays(a, b, 0.5, 0.5);
-        return ArrayTools.addArrays(c, h, .334, .666);
+    public static void setArray(double[] a,double[] b){//setted,setter
+        if(a.length>b.length){
+            for(int i=0;i<a.length;i++){
+                if(i<b.length){
+                    a[i]=b[i];
+                }
+                else{
+                    a[i]=0;
+                }
+            }
+        }
+        else{
+            for(int i=0;i<a.length;i++){
+                a[i]=b[i];
+            }
+        }
+        
     }
+    
+    
+    
+    public static double[] addArrays(double[]... values){
+    	int len=0;
+	int[] lens=new int[values.length];
+	for(int i=0;i<values.length;i++){
+		len+=values[i].length;
+		lens[i]=values[i].length;
+	}
+	double[] b=new double[len];
+
+    int maxVal =0;
+        for(int i=0;i<values.length;i++){
+            if(maxVal<values[i].length){
+                maxVal=values[i].length;
+            }
+        }
+        double[][] newValues=new double[values.length][maxVal];
+        for(int i=0;i<values.length;i++){
+            if(values[i].length<maxVal){
+                for(int e=0;e<maxVal;e++){
+                    if(e<values[i].length){
+                    newValues[i][e]=values[i][e];}
+                    else{
+                        newValues[i][e]=0;
+                    }
+                }
+            }
+            else{
+                for(int e=0;e<maxVal;e++){
+                    newValues[i][e]=values[i][e];
+                }
+            }
+        }
+        double[] a=new double[maxVal];
+	for(int i=0;i<maxVal;i++){
+        for(int e=0;e<newValues.length;e++){
+        a[i]+=newValues[e][i];
+        }
+        a[i]/=newValues.length;
+    }
+	return a;
+    }
+
     
     public static double[] trim(double[] a){
         int startI=0;
@@ -320,7 +384,7 @@ public static double[] beatGen(double hz, double ts1, double ts2, double bpm, do
         return speedMod;
     }*/
     public static double[] HbeatGen(double hz, double ts1, double ts2, double bpm, double beatLenMod,double fadeRatio){
-    return add3Arrays(beatGen(hz, ts1, ts2, bpm, beatLenMod,fadeRatio),beatGen(hz, ts1, ts2, bpm, beatLenMod,fadeRatio),beatGen(hz, ts1, ts2, bpm, beatLenMod,fadeRatio));
+    return addArrays(beatGen(hz, ts1, ts2, bpm, beatLenMod,fadeRatio),beatGen(hz, ts1, ts2, bpm, beatLenMod,fadeRatio),beatGen(hz, ts1, ts2, bpm, beatLenMod,fadeRatio));
                }
     
     
@@ -338,40 +402,22 @@ public static double[] beatGen(double hz, double ts1, double ts2, double bpm, do
         }
         return a;
     }
+    public static double[] noteBeatFollow(double[] freqs, double bpm, double beatLenMod,double fadeRatio){//beatLenMod is length of 
+        //double[] notes={440,493.883,277.183,329.628,369.994};//penta
+        int noteNum=freqs.length;
+        int aNoteLen=(int)Math.floor(240/(double)noteNum/bpm*(double)StdAudio.SAMPLE_RATE);
+        double[] a=new double[(int)noteNum*aNoteLen];
+        for(int i=0;i<noteNum;i++){
+            double[] thisNote = HbeatGen(freqs[i], 1, 1, bpm*(double)noteNum, (((double)2)/((double)3)),fadeRatio);
+            for(int e=aNoteLen*i;e<aNoteLen*(i+1);e++){
+                a[e]=thisNote[e-aNoteLen*i];
+            }
 
-    public static double[] simpleAdd(double[] a,double[] b){
-        double[] c = new double[Math.max(a.length,b.length)];
-        if(a.length>b.length){
-            for(int i=0;i<c.length;i++){
-                if(i<b.length)
-                c[i]=a[i]+b[i];
-                else
-                c[i]=a[i];
-            }
         }
-        if(a.length<b.length){
-            for(int i=0;i<c.length;i++){
-                if(i<a.length)
-                c[i]=a[i]+b[i];
-                else
-                c[i]=b[i];
-            }
-        }
-        if(a.length==b.length){
-            for(int i=0;i<c.length;i++){
-                c[i]=a[i]+b[i];
-            }
-        }
-        return c;
+        return a;
     }
 
-    public static void alien(){
-        StdAudio.play(simpleAdd(echo(HbeatGen(110, 8, 8, 60, (((double)2)/((double)3)),0.1),10000,0.3,0.05,0.5),HbeatGen(300, 8, 8, 50, (((double)1)/((double)4)),0.1)));
-    }
-    public static void electro(){
-         StdAudio.play(simpleAdd(echo(HbeatGen(110, 8, 8, 60, (((double)2)/((double)3)),0.1),10000,0.3,0.05,0.5),randBeatFollow(0, 8, 120, (((double)2)/((double)3)),0.1)));//beatGen
-    }
-  
+//============================================================================================================
     public static double[] riseInc(double startHz,double len,double inc){
         int arrayLen=(int)Math.ceil(len*(double)StdAudio.SAMPLE_RATE);
         System.out.println(arrayLen);
@@ -399,24 +445,62 @@ public static double[] beatGen(double hz, double ts1, double ts2, double bpm, do
     }
     public static double[] shepard(double startHz,double len){
         int arrayLen=(int)Math.ceil(len*(double)StdAudio.SAMPLE_RATE);
-        double[] a = new double[arrayLen];
         double[] a1 = new double[arrayLen];
         double[] a2 = new double[arrayLen];
         double[] a3 = new double[arrayLen];
         for(int i=0;i<arrayLen;i++){
-            a1[i]=Math.sin(((double)2.0) * ((double)Math.PI) * ((double)(i)) * (startHz+(((double)i)/((double)arrayLen))*startHz/2) / StdAudio.SAMPLE_RATE)*(arrayLen-i)/arrayLen;
+            a1[i]=Math.sin(((double)2.0) * ((double)Math.PI) * ((double)(i)) * (startHz+(((double)i)/((double)arrayLen))*startHz/2) / StdAudio.SAMPLE_RATE);
         }
         for(int i=0;i<arrayLen;i++){
-            a2[i]=Math.sin(((double)2.0) * ((double)Math.PI) * ((double)(i)) * ((startHz*2)+(((double)i)/((double)arrayLen))*startHz) / StdAudio.SAMPLE_RATE);
+            a2[i]=Math.sin(((double)2.0) * ((double)Math.PI) * ((double)(i)) * ((startHz*2)+(((double)i)/((double)arrayLen))*startHz) / StdAudio.SAMPLE_RATE)*(arrayLen-i)/arrayLen;;
         }
         for(int i=0;i<arrayLen;i++){
-            a3[i]=Math.sin(((double)2.0) * ((double)Math.PI) * ((double)(i)) * (startHz/2+(((double)i)/((double)arrayLen))*startHz/4) / StdAudio.SAMPLE_RATE)*i/arrayLen;
+            a3[i]=Math.sin(((double)2.0) * ((double)Math.PI) * ((double)(i)) * (startHz/2+(((double)i)/((double)arrayLen))*startHz/4) / StdAudio.SAMPLE_RATE)*(i)/arrayLen;
         }
-        a=add3Arrays(a1,a2,a3);
-        for(int i=0;i<a.length;i++){
+        double[] a=addArrays(a1,a2,a3);
+        /*for(int i=0;i<a.length;i++){
             a[i]/=3;
+        }*/
+        return a;
+    }
+    public static double[] shepardRisset(double startHz,double len,int shepards){
+        int arrayLen=(int)Math.ceil(len*(double)StdAudio.SAMPLE_RATE);
+        double[] a= new double[arrayLen];
+        double t=(double)(((double)len)/(double)shepards);
+        int tint= (int)Math.floor(arrayLen/(double)shepards);
+            for(int i=0;i<shepards;i++){
+                double[] b=shepard(startHz,t);
+                for(int e=0;e<tint;e++){
+                    a[i*tint+e]=b[e];
+                }
+            }
+        return a;
+    }
+    
+    
+    public static double[] shuffleNotes(double[] freqs,int num){
+        double[] b = new double[num];
+        for(int i=0;i<num;i++){
+            b[i]=freqs[(int) Math.floor(Math.random() * freqs.length)];
+        }
+        return b;
+        
+    }
+    public static double[] repeatBar(double[] bar,int num){
+        double[] a=new double[bar.length*num];
+        for(int i=0;i<num;i++){
+            for(int e=0;e<bar.length;e++){
+                a[i*e]=bar[e];
+            }
         }
         return a;
     }
+    
+    public static double[] readWav(String name){
+        return StdAudio.read(name);
+    }
+    public static int ensureRange(int value, int min, int max) {
+   		return Math.min(Math.max(value, min), max);
+	}
     
 }
