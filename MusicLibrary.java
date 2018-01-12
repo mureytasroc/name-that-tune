@@ -35,10 +35,11 @@ public class MusicLibrary {
         //double[] b = concatArrays(beatGen(60, 8, 8, 60, (((double)2)/((double)3)),0.4),beatGen(110, 8, 8, 60, (((double)2)/((double)3)),0.4));
         //StdAudio.play(addArrays(a,b));
         //StdAudio.play(realBeat(60));
-        StdAudio.play(riseInc(100, 5, 10));
+        //StdAudio.play(riseInc(100, 5, 10));
         //StdAudio.play(readWav("wavtest.wav"));
-        //StdAudio.play(read("cat.wav"));
+        StdAudio.play(read("catlow.wav"));
         //StdAudio.save("catplayed.wav",read("cat.wav"));
+        //StdAudio.play(presets.motorstrelski());
     }
     
    /* public static double[] sampleBeatGen(String sample, double ts1, double ts2, double bpm, double beatLenMod, double fadeRatio) { //beatLenMod is length of actual sound in that beat (1 is lowest value for this)
@@ -584,9 +585,10 @@ public class MusicLibrary {
         return data;
     }
     
-   /* public static double[] realBeat(double tempo){
+   
+   /*public static double[] realBeat(double tempo,){
         
-    }*/
+   }*/
     
         
     
