@@ -2,6 +2,7 @@ import java.applet.*;
 import java.net.*;
 import java.io.*;
 import javax.sound.sampled.*;
+import java.util.*;
 
 
 public class MusicLibrary {
@@ -31,13 +32,21 @@ public class MusicLibrary {
         //StdAudio.play(addArrays(concatArrays(a,a),concatArrays(HbeatGen(100, 4, 4, 120, 0.5,0.1),HbeatGen(100, 4, 4, 120, 0.5,0.1))));//beatGen
         //StdAudio.play(ArrayTools.scaleArray(trim(shepardRisset(100, 1000, 50)),4)); //shepard risset glissando
         //HbeatGen(double hz, double ts1, double ts2, double bpm, double beatLenMod, double fadeRatio)
-        //double[] a = presets.randomBeatSad();
+
         //double[] b = concatArrays(beatGen(60, 8, 8, 60, (((double)2)/((double)3)),0.4),beatGen(110, 8, 8, 60, (((double)2)/((double)3)),0.4));
         //StdAudio.play(addArrays(a,b));
-        //StdAudio.play(realBeat(60));
+        double[] b = presets.randomBeatSad(120)[0];
+        double[] tones = presets.randomBeatSad(120)[1];
+        double fr=tones[0]/(double)14.0;
+        double fr2=tones[1]/(double)14.0;
+        double[] a = ArrayTools.scaleArray(concatArrays(realBeat(120,2,fr,fr2),realBeat(120,2,fr,fr2),realBeat(120,2,fr,fr2),realBeat(120,2,fr,fr2)),0.1);
+        StdAudio.play(addArrays(b,a));
+        //StdAudio.play(realBeat(100,fr,fr2));
+        //StdAudio.play(realBeat(100,fr,fr2));
+        //StdAudio.play(realBeat(100,fr,fr2));
         //StdAudio.play(riseInc(100, 5, 10));
         //StdAudio.play(readWav("wavtest.wav"));
-        StdAudio.play(read("catlow.wav"));
+        //StdAudio.play(read("catlow.wav"));
         //StdAudio.save("catplayed.wav",read("cat.wav"));
         //StdAudio.play(presets.motorstrelski());
     }
@@ -68,8 +77,8 @@ public class MusicLibrary {
     }*/
     
     
-    public static double[] rest(double ts1,double ts2,double barPortion,double bpm){
-        double barLen=(240 / ts2 / bpm) * ts1;
+    public static double[] rest(double barPortion,double bpm){
+        double barLen=((double)240.0 / bpm);
         double restLen=barLen*barPortion;
         double n = (double) StdAudio.SAMPLE_RATE;
         int length = (int) Math.ceil(n * restLen);
@@ -199,14 +208,23 @@ public class MusicLibrary {
             len += values[i].length;
             lens[i] = values[i].length;
         }
+        
         double[] b = new double[len];
 
         for (int i = 0; i < values.length; i++) {
             for (int e = 0; e < values[i].length; e++) {
-                b[i * lens[ensureRange(i - 1, 0, lens.length - 1)] + e] = values[i][e];
+                b[totalPositionsBefore(lens,i) + e] = values[i][e];
             }
         }
         return b;
+    }
+    
+    public static int totalPositionsBefore(int[] a,int e){//adds total number of array positions before the given index value in an int array
+        int val=0;
+        for(int i=0;i<e;i++){
+            val+=a[i];
+        }
+        return val;
     }
 
 
@@ -364,9 +382,9 @@ public class MusicLibrary {
                 int poses = aNoteLen * (noteNum) + (int) Math.ceil((double) aNoteLen * beatLenMod) - i;
                 if (i < poses + i) { //beat part
                     if (i < poses + i - posToFade) {
-                        b[i] = Math.sin(2 * Math.PI * (i - aNoteLen * noteNum) * hz / StdAudio.SAMPLE_RATE);
+                        b[i] = Math.pow(Math.sin(-2 * Math.PI * (i - aNoteLen * noteNum) * hz / StdAudio.SAMPLE_RATE),7);
                     } else {
-                        b[i] = Math.sin(2 * Math.PI * (i - aNoteLen * noteNum) * hz / StdAudio.SAMPLE_RATE) * (1 - (((double)((i - aNoteLen * noteNum + poses - posToFade) - (posToFade))) / ((double) posToFade)));
+                        b[i] = (Math.pow(Math.sin(-2 * Math.PI * (i - aNoteLen * noteNum) * hz / StdAudio.SAMPLE_RATE),7)) * (1 - (((double)((i - aNoteLen * noteNum + poses - posToFade) - (posToFade))) / ((double) posToFade)));
                     }
                 } else { //rest part
                     b[i] = 0;
@@ -525,16 +543,6 @@ public class MusicLibrary {
     
     
     
-    public static int ensureRange(int value, int min, int max) {
-        return Math.min(Math.max(value, min), max);
-    }
-
-    
-    
-    
-    
-    
-    
     
     public static double[] read(String filename) {
         byte[] data = readByte(filename);
@@ -586,11 +594,64 @@ public class MusicLibrary {
     }
     
    
-   /*public static double[] realBeat(double tempo,){
-        
-   }*/
+   public static double[] realBeat(double tempo, int type,double hz, double hz2){
+       double randomSelector=Math.round(Math.random()*1);
+       
+       if(type==1){
+       double[] a = ArrayTools.scaleArray(MusicLibrary.HbeatGen(Math.random()*8, 1, 1, 480, 0.5,0),30);
+       return concatArrays(a,a,a,a);}
+       
+
+       else if(type==2){
+           double randomSelector2=randInt(1,3);
+       if(randomSelector2==1){
+       double[] a = ArrayTools.scaleArray(MusicLibrary.HbeatGen(hz, 1, 1, tempo*8, 0.2,0),30);
+       double[] d = ArrayTools.scaleArray(MusicLibrary.HbeatGen(hz2, 1, 1, tempo*8, 0.4,0),30);
+       double[] e = ArrayTools.scaleArray(MusicLibrary.HbeatGen(hz, 1, 1, tempo*8*2, 0.5,0),30);
+       double[] f = ArrayTools.scaleArray(MusicLibrary.HbeatGen(hz2, 1, 1, tempo*8*2, 0.5,0),30);
+       double[] b = concatArrays(a,a,d,a,rest(0.125,tempo),a,rest(0.25,tempo));
+        double[] r = addArrays(b,concatArrays(rest(0.74,tempo),f,e,f));
+       return r;
+       }
+       else if(randomSelector2==2){
+           double[] a = ArrayTools.scaleArray(MusicLibrary.HbeatGen(hz, 1, 1, tempo*8, 0.2,0),30);
+       double[] d = ArrayTools.scaleArray(MusicLibrary.HbeatGen(hz2, 1, 1, tempo*8, 0.2,0),30);
+       double[] b = concatArrays(a,a,d,a,rest(0.125,tempo),a,d,rest(0.125,tempo));
+       return b;
+       }
+       
+       else if(randomSelector2==3){
+           double[] a = ArrayTools.scaleArray(MusicLibrary.HbeatGen(hz, 1, 1, tempo*8, 0.2,0),30);
+       double[] d = ArrayTools.scaleArray(MusicLibrary.HbeatGen(hz2, 1, 1, tempo*8, 0.4,0),30);
+       double[] e = ArrayTools.scaleArray(MusicLibrary.HbeatGen(hz, 1, 1, tempo*8*4, 0.5,0),30);
+       double[] f = ArrayTools.scaleArray(MusicLibrary.HbeatGen(hz2, 1, 1, tempo*8*4, 0.5,0),30);
+           double[] h = ArrayTools.scaleArray(MusicLibrary.HbeatGen(hz, 1, 1, tempo*8, 0.5,0),30);
+       double[] b = concatArrays(a,a,rest(0.375,tempo),a,d,rest(0.125,tempo));
+        double[] r = addArrays(b,concatArrays(rest(0.25,tempo),f,e,f,a));
+           return r;
+       }
+           else{
+               return null;
+           }
+       }
+       
+       else{
+           return null;
+       }
+       
+       
+       
+   }
     
         
+    public static int randInt(int min, int max) {
+
+    Random random = new Random();
+return random.nextInt(max - min + 1) + min;
+        
+}
+    
+    
     
      /* private final int BUFFER_SIZE = 128000;
     private File soundFile;
