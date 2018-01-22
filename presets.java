@@ -10,26 +10,26 @@ public static double[] alien(){
         double[] notes={440,493.883,277.183,329.628,369.994};
         double[] notes2=MusicLibrary.shuffleNotes(notes,8);
         double[] startNotes=notes2;
-        double[] a =MusicLibrary.noteBeatFollow(notes2, tempo, 0.5,0.9);
+        double[] a =MusicLibrary.noteBeatFollow(notes2, tempo, 0.5,0.5);
         double[] finalie=a;
         //start
         notes2[0]=notes[(int) Math.floor(Math.random() * notes.length)];
         notes2[1]=notes[(int) Math.floor(Math.random() * notes.length)];
         double fnote=notes[0];
         double snote=notes[1];
-        a =MusicLibrary.noteBeatFollow(notes2, tempo, 0.5,0.9);
+        a =MusicLibrary.noteBeatFollow(notes2, tempo, 0.5,0.5);
         finalie=MusicLibrary.concatArrays(finalie,a);
         //end
         notes2[0]=notes[(int) Math.floor(Math.random() * notes.length)];
         notes2[1]=notes[(int) Math.floor(Math.random() * notes.length)];
-        a =MusicLibrary.noteBeatFollow(notes2, tempo, 0.5,0.9);
+        a =MusicLibrary.noteBeatFollow(notes2, tempo, 0.5,0.5);
         finalie=MusicLibrary.concatArrays(finalie,a);
         //--
         notes2[0]=fnote;
         notes2[1]=snote;
-        a =MusicLibrary.noteBeatFollow(startNotes, tempo, 0.5,0.9);
+        a =MusicLibrary.noteBeatFollow(startNotes, tempo, 0.5,0.5);
         finalie=MusicLibrary.concatArrays(finalie,a);
-        double[] ting = {fnote,snote};
+        double[] ting = {notes[(int) Math.floor(Math.random() * notes.length)],notes[(int) Math.floor(Math.random() * notes.length)],notes[(int) Math.floor(Math.random() * notes.length)],notes[(int) Math.floor(Math.random() * notes.length)],notes[(int) Math.floor(Math.random() * notes.length)],notes[(int) Math.floor(Math.random() * notes.length)],notes[(int) Math.floor(Math.random() * notes.length)],notes[(int) Math.floor(Math.random() * notes.length)]};
         double[][] fin = {finalie,ting};
         return (fin);
     }
