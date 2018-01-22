@@ -21,7 +21,7 @@ public class MusicLibrary {
         // insert code to run when exception occurs
     }*/
 
-        int songTheme = randInt(1,2);
+        int songTheme = randInt(1,3);
         
         //StdAudio.play(echo(concatArrays(concatArrays(majorChord(410,1),pitch(0,1)),minorChord(400,1)),10000,0.3,0.05,0.5));//echo
         //StdAudio.play(changeVol(pitch(440,1),0.01));//changeVol
@@ -675,9 +675,37 @@ public class MusicLibrary {
            }
        }
        
-       else{
-           return rest(1,tempo);
+       else if(type==3){
+           double randomSelector2=randInt(1,3);
+       if(randomSelector2==1){
+       double[] a = fit(concatArrays(trim(StdAudio.read("Samplz/Hat/"+randInt(1,3)+"new.wav")),rest(1,60)),tempo,0.125);//MusicLibrary.HbeatGen(hz, 1, 1, tempo*8, 0.7,0.8);
+       double[] d = fit(concatArrays(trim(StdAudio.read("Samplz/Hat/"+randInt(1,3)+"new.wav")),rest(1,60)),tempo,0.125);//MusicLibrary.HbeatGen(hz2, 1, 1, tempo*8, 0.7,0.8);
+       double[] e = fit(concatArrays(trim(StdAudio.read("Samplz/Hat/"+randInt(1,3)+"new.wav")),rest(1,60)),tempo,0.0625);//MusicLibrary.HbeatGen(hz, 1, 1, tempo*8*2, 0.7,0.8);
+       double[] f = fit(concatArrays(trim(StdAudio.read("Samplz/Hat/"+randInt(1,3)+"new.wav")),rest(1,60)),tempo,0.0625);//MusicLibrary.HbeatGen(hz2, 1, 1, tempo*8*2, 0.7,0.8);
+       double[] b = concatArrays(a,a,d,a,rest(0.125,tempo),a,rest(0.25,tempo));
+       double[] r = addArrays(b,concatArrays(rest(0.74,tempo),f,e,f));
+       return r;
        }
+       else if(randomSelector2==2){
+           //double[] kick = fit(concatArrays(StdAudio.read("Samplz/Kick/"+randInt(1,4)+"new.wav"),rest(1,60)),60,0.125);
+           double[] a = fit(concatArrays(trim(StdAudio.read("Samplz/Hat/"+randInt(1,3)+"new.wav")),rest(1,60)),tempo,0.125);//MusicLibrary.HbeatGen(hz, 1, 1, tempo*8, 0.7,0.8);
+       double[] d = fit(concatArrays(trim(StdAudio.read("Samplz/Hat/"+randInt(1,3)+"new.wav")),rest(1,60)),tempo,0.125);//MusicLibrary.HbeatGen(hz2, 1, 1, tempo*8, 0.7,0.8);
+       double[] b = concatArrays(a,a,d,a,rest(0.125,tempo),a,d,rest(0.125,tempo));
+       return b;
+       }
+       
+       else if(randomSelector2==3){
+           double[] a = fit(concatArrays(trim(StdAudio.read("Samplz/Hat/"+randInt(1,3)+"new.wav")),rest(1,60)),tempo,0.125);//MusicLibrary.HbeatGen(hz, 1, 1, tempo*8, 0.7,0.8);
+       double[] d = fit(concatArrays(trim(StdAudio.read("Samplz/Hat/"+randInt(1,3)+"new.wav")),rest(1,60)),tempo,0.125);//MusicLibrary.HbeatGen(hz2, 1, 1, tempo*8, 0.7,0.8);
+       double[] e = fit(concatArrays(trim(StdAudio.read("Samplz/Hat/"+randInt(1,3)+"new.wav")),rest(1,60)),tempo,0.03125);//MusicLibrary.HbeatGen(hz, 1, 1, tempo*8*4, 0.7,0.8);
+       double[] f = fit(concatArrays(trim(StdAudio.read("Samplz/Hat/"+randInt(1,3)+"new.wav")),rest(1,60)),tempo,0.03125);//MusicLibrary.HbeatGen(hz2, 1, 1, tempo*8*4, 0.7,0.8);
+       double[] b = concatArrays(a,a,rest(0.375,tempo),a,d,rest(0.125,tempo));
+        double[] r = addArrays(b,concatArrays(rest(0.25,tempo),f,f,f,a));
+           return r;
+       }
+       }
+       
+           return rest(1,tempo);
        
        
        
