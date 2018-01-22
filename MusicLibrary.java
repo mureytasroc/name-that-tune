@@ -21,7 +21,7 @@ public class MusicLibrary {
         // insert code to run when exception occurs
     }*/
 
-        int songTheme = randInt(0,3);
+        int songTheme = randInt(1,2);
         
         //StdAudio.play(echo(concatArrays(concatArrays(majorChord(410,1),pitch(0,1)),minorChord(400,1)),10000,0.3,0.05,0.5));//echo
         //StdAudio.play(changeVol(pitch(440,1),0.01));//changeVol
@@ -40,11 +40,11 @@ public class MusicLibrary {
         
         //StdAudio.play(fadeOut(majorChord(440,2),2));
         double[][] d = presets.randomBeatSad(60);
-        double[] b = ArrayTools.scaleArray(d[0],0.5);
+        double[] b = ArrayTools.scaleArray(d[0],0.2);
         double[] tones = d[1];
         double downval=2.0;
         
-        double[] a = ArrayTools.scaleArray(concatArrays(realBeat(120,1),realBeat(120,1),realBeat(120,1),realBeat(120,1),realBeat(120,1),realBeat(120,1),realBeat(120,1),realBeat(120,1)),5);
+        double[] a = ArrayTools.scaleArray(concatArrays(realBeat(120,songTheme),realBeat(120,songTheme),realBeat(120,songTheme),realBeat(120,songTheme),realBeat(120,songTheme),realBeat(120,songTheme),realBeat(120,songTheme),realBeat(120,songTheme)),1);
         StdAudio.play(addArrays(b,a));//addArrays(b,a)
         //StdAudio.play(realBeat(100,fr,fr2));
         //StdAudio.play(realBeat(100,fr,fr2));
@@ -90,7 +90,6 @@ public class MusicLibrary {
         for(int i=0;i<length;i++){
             b[i]=a[i];
         }
-        System.out.println(length);
         return b;
     }
     public static double[] rest(double barPortion,double bpm){
@@ -398,9 +397,9 @@ public class MusicLibrary {
                 int poses = aNoteLen * (noteNum) + (int) Math.ceil((double) aNoteLen * beatLenMod) - i;
                 if (i < poses + i) { //beat part
                     if (i < poses + i - posToFade) {
-                        b[i] = Math.pow(Math.sin(-2 * Math.PI * (i - aNoteLen * noteNum) * hz / StdAudio.SAMPLE_RATE),7);
+                        b[i] = Math.pow(Math.sin(-2 * Math.PI * (i - aNoteLen * noteNum)*hz / StdAudio.SAMPLE_RATE),7);
                     } else {
-                        b[i] = (Math.pow(Math.sin(-2 * Math.PI * (i - aNoteLen * noteNum) * hz / StdAudio.SAMPLE_RATE),7)) * (1 - (((double)((i - aNoteLen * noteNum + poses - posToFade) - (posToFade))) / ((double) posToFade)));
+                        b[i] = (Math.pow(Math.sin(-2 * Math.PI * (i - aNoteLen * noteNum)*hz / StdAudio.SAMPLE_RATE),7)) * (1 - (((double)((i - aNoteLen * noteNum + poses - posToFade) - (posToFade))) / ((double) posToFade)));
                     }
                 } else { //rest part
                     b[i] = 0;
@@ -677,7 +676,7 @@ public class MusicLibrary {
        }
        
        else{
-           return null;
+           return rest(1,tempo);
        }
        
        
